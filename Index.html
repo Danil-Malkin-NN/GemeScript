@@ -3,14 +3,26 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Изучение JavaScript</title>
+<!--	<script type="module" src="Command.js"/> -->
 	<script>
+	
+	var Command = function(x, y, angle) {
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
+    };
+
+    Command.prototype.x = 0;
+    Command.prototype.y = 0;
+    Command.prototype.angle = 0;
+
 		let tr_top = 0;
 		let tr_left = 0;
 		
 		function imagePos(X , Y, angle){
 			let im = document.getElementById("tractor100");
-			tr_top +=X;
-			tr_left +=Y;
+			tr_top += X;
+			tr_left += Y;
 			
 			im.style.transform = 'rotate(' + angle + 'deg)';
 			im.style.top = (tr_top + "px");
@@ -19,20 +31,31 @@
 		    
 		}
 		
-		let comand = [];
-		function stackComandAdd(X,Y,Angle){
-			comand += X + " " + Y+ " " + Angle + "\n";
-		     
-			
+		let commands = [];
+		
+		function stackCommandAdd(x, y, angle){
+		    commands.push(new Command(x, y, angle));
+		    console.log(commands);
 		}
+		
 		let comandN;
+
+
 		function comandStart(){
-			comandN = comand.split("\n");
-			
-			for(var i = 0; i < comandN.length - 1; i++){
-				sp = comandN[i].split(" ");
-				setTimeout(imagePos, i*500, Number(sp[0]),Number(sp[1]), Number(sp[2]));
-				}
+		    let commandNumber = 0;
+		    
+		    setTimeout(function handleCommand() {
+		        let command = commands[commandNumber];
+		        imagePos(command.x, command.y, 
+				            command.angle);
+				commandNumber++;
+				setTimeout(handleCommand, 500);
+		    }, 500);
+		}
+		
+		function clearS(){
+		    comand = "NuN";
+		    
 		}
 		function delComand(){
 		
@@ -48,16 +71,17 @@
 	<img name="tractor100" id="tractor100" style="position:absolute" src="tractor100.png">
 		
 	<div style="position:absolute; top:10%; left:80%" id=div2>
-	    <button value="up"      onClick="stackComandAdd(-30, 0 ,0)"> Вверх </button><br>
-		<button value="Left"    onClick="stackComandAdd(0, -30, 270)"> Лево </button><br>
-	    <button value="Right"   onClick="stackComandAdd(0, 30, 90)"> Право </button><br>
-	    <button value="Down"    onClick="stackComandAdd(30,0,180)"> Вниз </button><br>
+	    <button value="up"      onClick="stackCommandAdd(-30, 0 ,0)"> Вверх </button><br>
+		<button value="Left"    onClick="stackCommandAdd(0, -30, 270)"> Лево </button><br>
+	    <button value="Right"   onClick="stackCommandAdd(0, 30, 90)"> Право </button><br>
+	    <button value="Down"    onClick="stackCommandAdd(30,0,180)"> Вниз </button><br>
 	    <br>
 	    <br>
 	    <button value="go"    onClick="comandStart()"> Выполнить </button><br>
-		<br>
-		<br>
-		<button value="clean" onClick="delComand()"> Очистить список </button>
+
+	    <br>
+	    <br>
+	    <button value="clea" onClick="clearS()"> Очистить </button> 
 	</div>
 	
 	
