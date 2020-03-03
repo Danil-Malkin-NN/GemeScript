@@ -83,6 +83,9 @@ window.onload = function() {
 		
 	}
 	snow.src = '1.png';	 
+	//добавить тут замлю!
+	
+	
 }
 
 
