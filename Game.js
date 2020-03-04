@@ -60,6 +60,7 @@ function clearS(){
 
 
 window.onload = function() {
+    /*
 	let sugrob = new Image();
 	sugrob.onload = function() {
 		let canvas = document.getElementById('sugrob');
@@ -72,19 +73,23 @@ window.onload = function() {
 		context.drawImage(sugrob, sizeSugX*2, sizeSugY*6, sizeSugX, sizeSugY);
 	}
 	sugrob.src = 'sugrob.png';
-	
+	*/
 	let snow = new Image();
 	snow.onload = function(){
 		let canvas = document.getElementById('snow');
 		let context = canvas.getContext("2d");
 		context.drawImage(snow, 0, 0, 1024, 766);
-		
-		
-		
 	}
 	snow.src = '1.png';	 
-	//добавить тут замлю!
 	
+	//добавить тут замлю!
+	let grass = new Image();
+	grass.onload = function(){
+	    let canvas = document.getElementById('grass');
+	    let context = canvas.getContext("2d");
+	    context.drawImage(grass, 0, 0, 1024, 766);
+	}
+	grass.src = "grass.png";
 	
 }
 
