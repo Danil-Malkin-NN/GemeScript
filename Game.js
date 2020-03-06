@@ -1,3 +1,8 @@
+const PROG = 0; // Запоминаем команды
+const PLAY = 1; // Выполняем список команд
+const EXEC = 2; // Выполняем одну команду из списка команд
+
+let state = PROG;
 
 var Command = function(x, y, angle) {
 this.x = x;
@@ -8,6 +13,9 @@ this.angle = angle;
 Command.prototype.x = 0;
 Command.prototype.y = 0;
 Command.prototype.angle = 0;
+
+const weidth = 1024;
+const height = 766;
 
 let tr_top = 0;
 let tr_left = 0;
@@ -34,13 +42,38 @@ let comandN;
 
 
 function comandStart(){
+	
 	if (commands.length == 0)
-		return;
-		
+	    return;
+	
+	if (state == PLAY) {
+	    return;
+	}
+	
+	state = PLAY;
+
     let commandNumber = 0;
+    let deltaX;
+    let deltaY;
+    let command;
+    
+    
     
     setTimeout(function handleCommand() {
-        let command = commands[commandNumber];
+        switch (state) {
+            case PLAY:
+                command = commands[commandNumber];
+                deltaX = (command.x != 0) ? command.x / Math.abs(command.x) : 0;
+                
+                deltaY = (command.y > 0) ? command.y / Math.abs(command.y) : -1;
+                state = EXEC;
+                break;
+            
+            case EXEC:
+                
+                break;
+        }
+
         imagePos(command.x, command.y, 
 		            command.angle);
 		commandNumber++;
@@ -90,7 +123,30 @@ window.onload = function() {
 	}
 	grass.src = "grass.png";
 	
+	let canvas = document.getElementById('grid');
+	let context = canvas.getContext("2d");
+	
+		context.beginPath();
+	    context.lineWidth = 2;
+	    context.strokeStyle = 'red';
+	    for(let i = 0; i < height; i+=117){
+	        context.moveTo(0, i);
+	        context.lineTo(weidth, i);
+	    
+	    }
+	    
+	    for(let i = 0; i < weidth; i+=117){
+	        context.moveTo(i, 0);
+	        context.lineTo(i,height);
+	    
+	    }
+	    
+	    
+	    context.stroke();
 }
+	
+	
+
 function cleanGrass(angle){
     let canvas = document.getElementById('snow');
 	let context = canvas.getContext("2d");

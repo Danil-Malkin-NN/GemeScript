@@ -1,4 +1,6 @@
 #tractor100{
+top:0px;
+left:0px;
 position:absolute; 
 z-index:3;
 transform: rotate(0deg);
@@ -31,5 +33,11 @@ position:absolute;
 top: 0px; 
 left: 0px; 
 z-index:-1;
+}
+#grid{
+position:absolute; 
+top: 0px; 
+left: 0px; 
+z-index:2;
 }
 
