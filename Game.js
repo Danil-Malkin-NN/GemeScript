@@ -2,9 +2,13 @@ const PROG = 0; // Запоминаем команды
 const PLAY = 1; // Выполняем список команд
 const EXEC = 2; // Выполняем одну команду из списка команд
 
-const STEP_SIZE = 120; // px
-let state = PROG;
+const STEP_SIZE = 120; //
+const width = 1200;
+const height = 840;
+const finishX =  STEP_SIZE*7,
+	finishY = STEP_SIZE*5;
 
+let state = PROG;
 let houseXY = [[3,5],[4,5],[2,2],[7,4]];
 let sugrobXY = [[2,3],[2,4]];
 let scor = 0;
@@ -19,10 +23,6 @@ Command.prototype.x = 0;
 Command.prototype.y = 0;
 Command.prototype.angle = 0;
 
-const width = 1200;
-const height = 840;
-const finishX =  STEP_SIZE*7,
-		finishY = STEP_SIZE*5;
 
 let tr_top = 0;
 let tr_left = 0;
@@ -98,11 +98,9 @@ function comandStart(){
                     setTimeout(play, timeout);
                 } else {
                     clearS();
-
                     state = PROG;
                 }
                 break;
-            
             case EXEC:
                 if (pxStepCounter == 0) {
                     state = PLAY;
@@ -174,7 +172,7 @@ function stacComand(comand){
 
 function stacComandClear(){
 	if( state == PROG)
-		document.getElementById("stacComand").innerText = "";
+		document.getElementById("stacComand").innerText = " ";
 }
 
 
