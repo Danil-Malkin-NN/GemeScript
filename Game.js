@@ -3,9 +3,10 @@ const PLAY = 1; // Выполняем список команд
 const EXEC = 2; // Выполняем одну команду из списка команд
 
 const STEP_SIZE = 120; // px
-
 let state = PROG;
 
+let houseXY = [[3,5],[4,5],[2,2],[7,4]];
+let sugrobXY = [[2,3],[2,4]];
 let scor = 0;
 
 var Command = function(x, y, angle) {
@@ -18,7 +19,7 @@ Command.prototype.x = 0;
 Command.prototype.y = 0;
 Command.prototype.angle = 0;
 
-const weidth = 1200;
+const width = 1200;
 const height = 840;
 const finishX =  STEP_SIZE*7,
 		finishY = STEP_SIZE*5;
@@ -33,7 +34,8 @@ function imagePos(X , Y, angle){
 	im.style.transform = 'rotate(' + angle + 'deg)';
 	im.style.top = (tr_top + "px");
 	im.style.left = (tr_left + "px");
-	cleanGrass(angle);
+	cleanGrass(angle, "snow");
+	cleanGrass(angle,"sugrob")
 	score();
     finishGame();
 }
@@ -117,8 +119,9 @@ function clearS(){
 }
 
 //функция очистки земли
-function cleanGrass(angle){
-    let canvas = document.getElementById('snow');
+function cleanGrass(angle,canva){
+
+    let canvas = document.getElementById(canva);
 	let context = canvas.getContext("2d");
 	if(angle == 90){
         context.clearRect(tr_left + 70, tr_top, 50, STEP_SIZE); 
@@ -130,31 +133,53 @@ function cleanGrass(angle){
         context.clearRect(tr_left, tr_top, STEP_SIZE,50);
     }
 }
+
 function score(){
-	let doc = document.getElementById("score").innerText = scor++;
+	for(let i = 0; i < sugrobXY.length; i++){
+		if(sugrobXY[i][0]*STEP_SIZE == tr_left && sugrobXY[i][1]*STEP_SIZE == tr_top )
+			scor -=240;
+	}
+	document.getElementById("score").innerText = scor++;
 
 }
 function finishGame(){
 	if( tr_left == finishX && tr_top == finishY){
 		alert("Конец игры, ваш счёт : " + scor + " !!")
-
+	}
+	for(let i = 0; i < houseXY.length; i++){
+		if(houseXY[i][0]*STEP_SIZE == tr_left && houseXY[i][1]*STEP_SIZE == tr_top ) {
+			tr_top = 0;
+			tr_left = 0;
+			scor = 0;
+			alert("Эй, смотри куда едешь! строй алгоритм, что бы не наезжать на дома!!")
+		}
 	}
 
+
+
 }
+
 
 //Отрисовка Линий, снега, земли, сугробов, домов наверное тоже!
 window.onload = function() {
 
 	let sugrob = new Image();
 	let finish = new Image();
+	let house = new Image();
 	sugrob.onload = function() {
 		let canvas = document.getElementById('sugrob');
 		let context = canvas.getContext("2d");
-		context.drawImage(sugrob, STEP_SIZE*2, STEP_SIZE*3, STEP_SIZE, STEP_SIZE);
-		context.drawImage(sugrob, STEP_SIZE*2, STEP_SIZE*4, STEP_SIZE, STEP_SIZE);
-		context.drawImage(finish, finishX, finishY, STEP_SIZE, STEP_SIZE);
+		for(let i =0; i < sugrobXY.length; i++) {
+			context.drawImage(sugrob, STEP_SIZE*sugrobXY[i][0], STEP_SIZE*sugrobXY[i][1], STEP_SIZE, STEP_SIZE);
+		}
 
+		for(let i =0; i < houseXY.length; i++) {
+			context.drawImage(house, STEP_SIZE * houseXY[i][0], STEP_SIZE * houseXY[i][1], STEP_SIZE, STEP_SIZE);
+		}
+		context.drawImage(finish, finishX, finishY, STEP_SIZE, STEP_SIZE);
 	}
+
+	house.src = 'House.png';
 	finish.src = 'Finish.png';
 	sugrob.src = 'sugrob.png';
 
@@ -164,7 +189,7 @@ window.onload = function() {
 	snow.onload = function(){
 		let canvas = document.getElementById('snow');
 		let context = canvas.getContext("2d");
-		context.drawImage(snow, 0, 0, weidth, height);
+		context.drawImage(snow, 0, 0, width, height);
 	}
 	snow.src = '1.png';
 
@@ -173,7 +198,7 @@ window.onload = function() {
 	grass.onload = function(){
 		let canvas = document.getElementById('grass');
 		let context = canvas.getContext("2d");
-		context.drawImage(grass, 0, 0, weidth, height);
+		context.drawImage(grass, 0, 0, width, height);
 	}
 	grass.src = "grass.png";
 
@@ -185,11 +210,11 @@ window.onload = function() {
 	context.strokeStyle = 'red';
 	for(let i = 0; i < height; i+= STEP_SIZE){
 		context.moveTo(0, i);
-		context.lineTo(weidth, i);
+		context.lineTo(width, i);
 
 	}
 
-	for(let i = 0; i < weidth; i+= STEP_SIZE){
+	for(let i = 0; i < width; i+= STEP_SIZE){
 		context.moveTo(i, 0);
 		context.lineTo(i,height);
 
